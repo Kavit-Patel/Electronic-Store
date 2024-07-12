@@ -25,7 +25,7 @@ export const registerUser = createAsyncThunk(
       const res = await req.json();
       if (res.success) {
         toast.success(res.message);
-        return res.data;
+        return res.response;
       } else {
         toast.error(res.message);
         throw new Error(res.message);
@@ -57,7 +57,7 @@ export const userLogin = createAsyncThunk(
       const res = await req.json();
       if (res.success) {
         toast.success(res.message);
-        return res.data;
+        return res.response;
       } else {
         toast.error(res.data);
         throw new Error(res.message);
@@ -82,7 +82,7 @@ export const autoLogin = createAsyncThunk(
       );
       const res = await req.json();
       if (res.success) {
-        return res.data;
+        return res.response;
       } else {
         throw new Error(res.message);
       }

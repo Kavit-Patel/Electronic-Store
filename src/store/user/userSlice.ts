@@ -29,6 +29,7 @@ const userSlice = createSlice({
         state.status = "pending";
       })
       .addCase(userLogin.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.status = "success";
         state.user = action.payload;
       })

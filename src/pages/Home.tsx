@@ -1,9 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/Store";
+import { useEffect } from "react";
+import { getAllProducts } from "../store/product/productApi";
 
 const Home = () => {
-  const data = [];
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, productsFetchedStatus } = useSelector(
+    (state: RootState) => state.product
+  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [navigate]);
+  useEffect(() => {
+    (async () => {
+      await dispatch(getAllProducts());
+    })();
+  }, [dispatch]);
   return (
     <div className=" bg-[#DFDFDF] w-full flex justify-center">
       <div className={`w-[375px] md:w-[800px] lg:w-[1000px] `}>
@@ -119,9 +135,9 @@ const Home = () => {
             id="categorySection"
             className="w-full md:h-[128px] flex flex-col md:flex-row gap-3 justify-center items-center"
           >
-            {data.productsStatus === "loading" && <Loader />}
-            {data.productsStatus === "success" &&
-              data?.products?.map(
+            {productsFetchedStatus === "pending" && <Loader />}
+            {productsFetchedStatus === "success" &&
+              products?.map(
                 (product) =>
                   product.section === "category" && (
                     <div key={product._id} className="categoryCard">
@@ -152,9 +168,9 @@ const Home = () => {
             id="featuredSection"
             className="flex justify-center md:justify-between flex-wrap gap-2"
           >
-            {data.productsStatus === "loading" && <Loader />}
-            {data.productsStatus === "success" &&
-              data.products.map(
+            {productsFetchedStatus === "pending" && <Loader />}
+            {productsFetchedStatus === "success" &&
+              products?.map(
                 (product) =>
                   product.section === "newArrival" && (
                     <div
@@ -185,9 +201,9 @@ const Home = () => {
         <div className="px-20 flex flex-col gap-12">
           <h2 className="text-xl font-semibold">Discounted up to - 50%</h2>
           <div id="discountedSection" className="flex flex-wrap gap-2">
-            {data.productsStatus === "loading" && <Loader />}
-            {data.productsStatus === "success" &&
-              data.products.map(
+            {productsFetchedStatus === "pending" && <Loader />}
+            {productsFetchedStatus === "success" &&
+              products?.map(
                 (product) =>
                   product.section === "discounted" && (
                     <div

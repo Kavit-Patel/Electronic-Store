@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../store/Store";
 import { autoLogin, userLogout } from "../store/user/userApi";
+import Cookies from "js-cookie";
 
 export const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +23,9 @@ export const Header = () => {
     <div className="w-full bg-[#DFDFDF] flex justify-center">
       <div className="w-[375px] md:w-[800px] lg:w-[1000px]">
         <div className="w-full flex items-center justify-between px-8 md:px-4 h-[88px] bg-[#f5f5f5]">
-          <img src="../../images/Logo.png" alt="Logo" />
+          <Link to="/">
+            <img src="../../images/Logo.png" alt="Logo" />
+          </Link>
           <p className="hidden md:block relative">
             <img
               className="absolute top-4 left-3"
@@ -90,6 +93,7 @@ export const Header = () => {
                     <Link
                       onClick={async () => {
                         await dispatch(userLogout());
+                        Cookies.remove("ecommerce_token");
                         setShow((prev) => ({ ...prev, user: !prev.user }));
                       }}
                       className="text-sm md:text:md hover:bg-slate-100 hover:font-semibold active:bg-slate-200  active:scale-95  px-1.5 py-1"
