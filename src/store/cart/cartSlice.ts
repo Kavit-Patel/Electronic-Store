@@ -10,6 +10,7 @@ import {
 
 export interface IinitialState {
   cart: Icart[] | null;
+  cartLocalStorage: Icart[] | null;
   cartFetchedStatus: "idle" | "success" | "fail" | "pending";
   addToCartStatus: "idle" | "success" | "fail" | "pending";
   deleteFromCartStatus: "idle" | "success" | "fail" | "pending";
@@ -19,6 +20,7 @@ export interface IinitialState {
 
 const initialState: IinitialState = {
   cart: null,
+  cartLocalStorage: null,
   cartFetchedStatus: "idle",
   addToCartStatus: "idle",
   deleteFromCartStatus: "idle",
@@ -29,7 +31,11 @@ const initialState: IinitialState = {
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    cartLocalStorage: (state, action) => {
+      state.cartLocalStorage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserCart.fulfilled, (state, action) => {
@@ -108,4 +114,5 @@ const cartSlice = createSlice({
       });
   },
 });
+export const { cartLocalStorage } = cartSlice.actions;
 export default cartSlice.reducer;

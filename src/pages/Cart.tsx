@@ -12,6 +12,7 @@ import {
   getUserCart,
   increaseQuantity,
 } from "../store/cart/cartApi";
+import localCart from "../utility/localStorageOperation";
 
 function Cart() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function Cart() {
     const addingToCart = async () => {
       if (user && id && !addOnce.current) {
         console.log("added");
+        localCart("addItem", user._id, id);
         await dispatch(addToCart({ userId: user._id, productId: id }));
         addOnce.current = true;
         navigate("/cart");
@@ -141,6 +143,11 @@ function Cart() {
                             <button
                               onClick={async () => {
                                 if (user && item._id) {
+                                  localCart(
+                                    "decrease",
+                                    user._id,
+                                    item.product._id
+                                  );
                                   await dispatch(
                                     decreaseQuantity({
                                       userId: user._id,
@@ -159,6 +166,11 @@ function Cart() {
                             <button
                               onClick={async () => {
                                 if (user && item._id) {
+                                  localCart(
+                                    "increase",
+                                    user._id,
+                                    item.product._id
+                                  );
                                   await dispatch(
                                     increaseQuantity({
                                       userId: user._id,
@@ -180,7 +192,8 @@ function Cart() {
                               //   item.product._id,
                               //   "remove"
                               // );
-                              if (item._id && user?._id) {
+                              if (item._id && user) {
+                                localCart("remove", user._id, item.product._id);
                                 await dispatch(
                                   deleteFromCart({
                                     userId: user._id,
